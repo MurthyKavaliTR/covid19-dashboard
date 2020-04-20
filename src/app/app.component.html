@@ -52,11 +52,7 @@
   }
 
   .content {
-    display: flex;
-    margin: 82px auto 32px;
     padding: 0 16px;
-    max-width: 960px;
-    flex-direction: column;
     align-items: center;
   }
 
@@ -141,17 +137,6 @@
     top: 10px;
     right: 180px;
     z-index: -10;
-  }
-
-  a,
-  a:visited,
-  a:hover {
-    color: #C2EDFE;
-    text-decoration: none;
-  }
-
-  a:hover {
-    color: #125699;
   }
 
   .terminal {
@@ -282,43 +267,206 @@
       display: none;
       visibility: hidden;
     }
+
+    #img-logo{
+      width: 52px;
+    }
+
+    .brand-logo{
+      font-size: 22px;
+      left: 54%;
+    }
+  }
+
+  @media only screen and (min-width: 993px){
+    .container {
+        width: 85%;
+    }
+  }
+
+  .sidenav-overlay{
+    z-index: 996 !important;
   }
 </style>
 
-<!-- Toolbar -->
-<div class="toolbar" role="banner">
-  <img
-    width="58"
-    alt="Logo"
-    src="../assets/images/logo1.jpg"
-  />
-    <div class="spacer"></div>
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper" style="background-color: #35D9FC;">
+      <img id="img-logo"
+        width="58"
+        alt="Logo"
+        src="../assets/images/logo1.jpg"
+        (click)="scrollToView('div_home')"
+      />
+      <a class="brand-logo" (click)="scrollToView('div_home')"> #IndiaFightsCorona</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a  (click)="scrollToView('div_home')">Home</a></li>
+        <li><a  (click)="scrollToView('div_updates')">Updates</a></li>
+        <li><a  (click)="scrollToView('div_state')">State Tracker</a></li>
+        <li><a  (click)="scrollToView('div_qna')">FAQs</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+        <li><a  (click)="scrollToView('div_home')">Home</a></li>
+        <li><a  (click)="scrollToView('div_updates')">Updates</a></li>
+        <li><a  (click)="scrollToView('div_state')">State Tracker</a></li>
+        <li><a  (click)="scrollToView('div_qna')">FAQs</a></li>
+  </ul>
 </div>
+      
 
-<div class="content" role="main">
+<div class="container" role="main" id="div_home">
 
-  <!-- Highlight Card -->
-  <div class="card highlight-card card-small">
-    <span>Covid-19 Tracker Dashboard</span>
+  <div class="row" style="margin-top: 30px;">
+    <div class="col s1"></div>
+    <div class="col s12 m2">
+      <span style="
+      font-size: 18px;
+  ">COVID-19 INDIA</span>
+      <br/>
+      <span style="
+      font-size: 12px;
+  ">as on <span id="spn_lastUpdated"></span></span>
+    </div>
+    <div class="col s6 m2" style="text-align: center;height: 105px;">
+      <span style="
+      display: block;
+      font-weight: 600;
+      font-size: 22px;
+      color:salmon;
+  ">Confirmed</span> <br/>
+      <span id="spn_total" 
+      style="
+      font-weight: bolder;
+      font-size: 50px;
+      color: salmon;
+  ">--</span> <br/>
+  <span
+  style="
+  font-size: 20px;
+  color: salmon;
+"><span id="spn_totalD">0</span><i class="material-icons">arrow_upward</i></span>
+    </div>
+    <div class="col s6 m2" style="text-align: center;height: 105px;">
+      <span
+      style="
+      display: block;
+      font-weight: 600;
+      font-size: 22px;
+      color: #35D9FC;
+  ">Active</span> <br/>
+   <span  id="spn_active" style="
+   font-weight: bolder;
+   font-size: 50px;
+   color: #35D9FC;
+">--</span> 
+    </div>
+    <div class="col s6 m2" style="text-align: center;height: 105px;">
+      <span  
+      style="
+      display: block;
+      font-weight: 600;
+      font-size: 22px;
+      color: green;
+  ">Recovered</span> <br/>
+      <span id="spn_recovered" style="
+      font-weight: bolder;
+      font-size: 50px;
+      color: green;
+  ">--</span> <br/>
+  <span  style="
+  font-size: 20px;
+  color: green;
+"><span id="spn_recoveredD">0</span><i class="material-icons">arrow_upward</i></span>
+    </div>
+    <div class="col s6 m2" style="text-align: center;height: 105px;">
+      <span
+      style="
+      display: block;
+      font-weight: 600;
+      font-size: 22px;
+      color: darkgrey;
+  ">Deceased</span> <br/>
+      <span  id="spn_deceased" style="
+      font-weight: bolder;
+      font-size: 50px;
+      color: darkgrey;
+  ">--</span> <br/>
+  <span style="
+  font-size: 20px;
+  color: darkgrey;
+"><span id="spn_deceasedD">0</span><i class="material-icons">arrow_upward</i></span>
+    </div>
+    <div class="col s1"></div>
+  <div class="col s12" style="text-align: center;">
+    <a class="waves-effect waves-light btn" (click)="scrollToView('div_state')" style="
+    background-color: #35D9FC;
+">See State wise details</a>
   </div>
-
-  <div class="card-container">
-    <app-updates></app-updates>
   </div>
-  
-  <div class="card-container">
-    <app-facts></app-facts>
+  <div class="divider"></div>
+  <div class="row" style="margin-top: 30px;">
+    <div class="col s12 m6">
+      <p style="font-size:20px;">What is <span style="
+        font-size: 40px;
+        font-weight: bold;
+        color: red;">COVID-19?</span></p>
+      <p style="font-size:20px;margin-top:15px;">It is an infectious disease causedcaused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). 
+        The outbreak was identified in Wuhan, China, in December 2019. 
+        The World Health Organization declared the outbreak to be a Public Health Emergency of International Concern on 30 January 2020, 
+        and then recognized it as a pandemic on 11 March 2020.</p>
+    </div>
+    <div class="col s12 m6">
+      <iframe height="315" src="https://www.youtube.com/embed/1APwq1df6Mw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%;"></iframe>
+    </div>
   </div>
-
+  <div class="divider" id="div_updates"></div>
+  <div class="row" style="margin-top: 30px;">
+    <h1 style="
+    color: #35D9FC;
+    font-size: 30px;
+">Latest Updates</h1>
+    <div class="col s12 m4" style="
+    height: 800px;
+    overflow-y: scroll;">
+      <app-updates></app-updates>
+    </div>
+    <div class="col s12 m4">
+      <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FMyGovIndia&tabs=timeline&width=360&height=800&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId=235621277038602" width="360" height="800" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+    </div>
+    <div class="col s12 m4">
+      <a class="twitter-timeline" data-lang="en" data-width="100%" data-height="800" data-dnt="true" data-theme="light" href="https://twitter.com/COVIDNewsByMIB?ref_src=twsrc%5Etfw">Tweets by COVIDNewsByMIB</a>
+    </div>
+  </div>
+  <div class="divider" id="div_state"></div>
+  <div class="row" style="margin-top: 30px;">
+    <h1 style="
+    color: #35D9FC;
+    font-size: 30px;
+">State wise details</h1>
+    <div class="col s2"></div>
+    <div class="col s12 m8">
+      <app-grid></app-grid>
+    </div>
+    <div class="col s2"></div>
+  </div>
+  <div>
+    <div class="divider" id="div_qna"></div>
+    <div class="row" style="margin-top: 30px;">
+      <h1 style="
+      color: #35D9FC;
+      font-size: 30px;
+  ">FAQs</h1>
+      <app-questionanswers></app-questionanswers>
+    </div>
+  </div>
   <!-- Footer -->
   <footer>
       
   </footer>
-
-  <svg id="clouds" alt="Gray Clouds Background" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
-    <path id="Path_39" data-name="Path 39" d="M2379.709,863.793c10-93-77-171-168-149-52-114-225-105-264,15-75,3-140,59-152,133-30,2.83-66.725,9.829-93.5,26.25-26.771-16.421-63.5-23.42-93.5-26.25-12-74-77-130-152-133-39-120-212-129-264-15-54.084-13.075-106.753,9.173-138.488,48.9-31.734-39.726-84.4-61.974-138.487-48.9-52-114-225-105-264,15a162.027,162.027,0,0,0-103.147,43.044c-30.633-45.365-87.1-72.091-145.206-58.044-52-114-225-105-264,15-75,3-140,59-152,133-53,5-127,23-130,83-2,42,35,72,70,86,49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33,61.112,8.015,113.854-5.72,150.492-29.764a165.62,165.62,0,0,0,110.861-3.236c47,94,178,113,251,33,31.385,4.116,60.563,2.495,86.487-3.311,25.924,5.806,55.1,7.427,86.488,3.311,73,80,204,61,251-33a165.625,165.625,0,0,0,120,0c51,13,108,15,157-5a147.188,147.188,0,0,0,33.5-18.694,147.217,147.217,0,0,0,33.5,18.694c49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33C2446.709,1093.793,2554.709,922.793,2379.709,863.793Z" transform="translate(142.69 -634.312)" fill="#eee"/>
-  </svg>
-
 </div>
 
 <router-outlet></router-outlet>

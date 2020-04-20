@@ -9,7 +9,7 @@ import {HttpClient} from '@angular/common/http'
 })
 export class FactsComponent implements OnInit {
   factoids:Array<any>;
-  faq:Array<any>
+  //faq:Array<any>
   bannerText:string;
 
 
@@ -20,10 +20,8 @@ export class FactsComponent implements OnInit {
     subscribe(data=>{
       console.log(data)
       this.factoids = data.factoids;
-      this.faq = data.faq;
+      //this.faq = data.faq;
       this.bannerText = this.factoids[1].banner;
     })
   }
-  
-
 }

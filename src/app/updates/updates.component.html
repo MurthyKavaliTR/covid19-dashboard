@@ -1,1 +1,16 @@
-<p>updates works!</p>
+<mat-list *ngFor="let date of data">
+    <div mat-subheader style="
+    font-weight: 600;
+">{{date[0]}}</div>
+    <mat-list-item *ngFor="let upd of date[1]" style="
+    height: auto;padding-bottom: 10px;
+">
+      <div mat-line style="
+      white-space: normal;
+      overflow: unset;
+      padding-bottom: 5px;
+  ">{{upd.update}}</div>
+      <div mat-line> {{upd.time}} </div>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>

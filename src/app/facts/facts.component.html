@@ -8,18 +8,3 @@
         </p>
     </div>
 </div> -->
-<div>
-    <h1>FAQ</h1>
-    <div style="width: 500px; height: auto;">
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let item of faq" style="padding: 20px; height: auto;">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h2>{{item.question}}</h2>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-label style="color: cornflowerblue;">{{item.answer}}</mat-label>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </div>
-</div>

@@ -1,19 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
-
-/**
- * Food data with nested structure.
- * Each node has a name and an optional list of children.
- */
-interface FoodNode {
-  name: string;
-  count1 : number,
-  count2 : number,
-  children?: FoodNode[];
-}
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 interface StateData {
   state	: string,
@@ -27,132 +19,109 @@ interface StateData {
   recovered: number,
   statecode: string,
   statenotes: string,
-  children?: DistrictData[];
+  children?: any,
+  district?:string
 }
 
 interface DistrictData {
-  district: string;
+  district: string,
   confirmed: number,
   deltaconfirmed: number,
   lastupdatedtime: string
 }
 
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    count1 : 1,
-    count2 : 2,
-    children: [
-      {name: 'Apple',
-      count1 : 1,
-      count2 : 2},
-      {name: 'Banana',count1 : 1,
-      count2 : 2},
-      {name: 'Fruit loops',count1 : 1,
-      count2 : 2},
-    ]
-  }, {
-    name: 'Vegetables',
-    count1 : 1,
-      count2 : 2,
-    children: [
-      {
-        name: 'Green',
-        count1 : 1,
-      count2 : 2
-      }, {
-        name: 'Orange',
-        count1 : 1,
-      count2 : 2
-      },
-    ]
-  },
-];
-
-/** Flat node with expandable and level information */
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  count1 : number;
-  count2 : number;
-  level: number;
-}
-
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.css']
+  styleUrls: ['./grid.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class GridComponent implements OnInit {
-
   stateRawData : any;
   districtRawData : any;
-  stateData : StateData;
+  stateData : StateData[];
   districtData : DistrictData;
-
-  private _transformer = (node: FoodNode, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      count1: node.count1,
-      count2: node.count2,
-      level: level,
-    };
-  }
-
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
-      node => node.level, node => node.expandable);
-
-  treeFlattener = new MatTreeFlattener(
-      this._transformer, node => node.level, node => node.expandable, node => node.children);
-
-  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
+  columnsToDisplay = ['State', 'Confirmed', 'Active', 'Recovered','Deceased'];
+  columnsToDisplay_child = ['District', 'Confirmed'];
+  expandedElement: DistrictData[] | null;
+  total : {
+    active : number,
+    confirmed: number,
+    deaths: number,
+    deltaconfirmed: number,
+    deltadeaths: number,
+    deltarecovered: number,
+    lastupdatedtime: string,
+    recovered: number,
+  };
+  dataSource: MatTableDataSource<StateData>;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(private http: HttpClient) { 
-    this.dataSource.data = TREE_DATA;
+    
   }
-
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   
   ngOnInit(): void {
     this.getData();
   }
 
   getData(){
-
-
     let states = this.http.get('https://api.covid19india.org/data.json');
     let districts = this.http.get('https://api.covid19india.org/state_district_wise.json');
 
     forkJoin([states, districts]).subscribe(results => {
-      // results[0] is our character
-      // results[1] is our character homeworld
-      //results[0].homeworld = results[1];
-      //this.loadedCharacter = results[0];
       this.stateRawData = results[0]["statewise"];
       this.districtRawData = results[1];
       
       console.log(this.stateRawData);
       console.log(this.districtRawData);
+      this.setData();
+      this.total = this.stateRawData[0];
+      this.stateRawData = this.stateRawData.filter(item => item.children != undefined);
+      this.stateData = this.stateRawData;
+      this.dataSource = new MatTableDataSource(this.stateData);
+     // this.dataSource.sort = this.sort;
+      document.getElementById('spn_total').innerHTML = this.total.confirmed.toString();
+      document.getElementById('spn_totalD').innerHTML = this.total.deltaconfirmed.toString();
+      document.getElementById('spn_active').innerHTML = this.total.active.toString();
+      document.getElementById('spn_recovered').innerHTML = this.total.recovered.toString();
+      document.getElementById('spn_recoveredD').innerHTML = this.total.deltarecovered.toString();
+      document.getElementById('spn_deceased').innerHTML = this.total.deaths.toString();
+      document.getElementById('spn_deceasedD').innerHTML = this.total.deltadeaths.toString();
+      document.getElementById('spn_lastUpdated').innerHTML = this.total.lastupdatedtime.toString();
     });
   }
 
   setData(){
     let keys_state = Object.keys(this.districtRawData);
 
-    keys_state.forEach(element => {
-      let keys_district = Object.keys(this.districtRawData[element]);
-      
+    keys_state.forEach(state => {
+      let arr_dis = this.districtRawData[state]["districtData"];
+      let keys_district = Object.keys(arr_dis);
+      let dist = [];
+      keys_district.forEach(district => {
+        dist.push({
+          district: district,
+          confirmed: arr_dis[district]["confirmed"],
+          deltaconfirmed: arr_dis[district]["delta"]["confirmed"],
+          lastupdatedtime: arr_dis[district]["lastupdatedtime"]
+        });
+      });
+      dist.sort(function(a, b) {
+        return b.confirmed - a.confirmed;
+    });
+      this.stateRawData.map(a => a.children = a.state == state ? dist :a.children);
     });
 
+  }
 
-    let state_district = 
-
-
-    this.stateRawData.forEach(element => {
-       let arrDistrict = this.stateRawData.filter
-    });
+  getTotal(type:string) {
+    return this.total == undefined ? 0:this.total[type];
   }
 
 }

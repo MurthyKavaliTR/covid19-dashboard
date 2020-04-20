@@ -1,0 +1,10 @@
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let item of faq">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{item.question}}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-label innerHTML="{{item.answer}}"></mat-label>
+    </mat-expansion-panel>
+</mat-accordion>
