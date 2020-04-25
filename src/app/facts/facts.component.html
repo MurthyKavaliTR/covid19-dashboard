@@ -1,10 +1,114 @@
-<p>facts works!</p>
-<mat-card style="color: chocolate;">{{bannerText}}</mat-card>
-<!-- <div style="width: 400px; height: auto;">
-    <div *ngFor="let item of faq">
-        <h2>{{item.question}}</h2>
-        <p style="color: blue;">
-            {{item.answer}}
-        </p>
+<!-- note: this codes shows facts as a scrolling text -->
+<!-- <body>
+  <div id="text-carousel" class="carousel slide" data-ride="carousel" data-interval="2000" data-pause="hover">
+    <div class="row">
+      <div class="col-xs-offset-3 col-xs-6">
+        <div class="carousel-inner">
+          <div class="item active">
+            <div class="carousel-content">
+              <div>
+                <p> your essential needs will be taken care of by the government in a timely manner. Please do not hoard</p>
+              </div>
+            </div>
+          </div>
+          <div class="item " *ngFor="let fact of factoids" >
+            <div class="carousel-content">
+              <div>
+                <p> {{fact.banner}} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div> -->
+     <a class="left carousel-control" href="#text-carousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#text-carousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+  </div>
+</body> -->
+
+<!-- Note: this code shows facts in five slides where each contains 5 facts -->
+
+<body>
+  <div id="text-carousel" class="carousel slide" data-ride="carousel" data-interval="2000" data-pause="hover">
+    <!-- Wrapper for slides -->
+    <div class="row">
+      <div class="col-xs-offset-3 col-xs-6">
+        <div class="carousel-inner">
+          <div class="item active">
+            <div class="carousel-content">
+              <div>
+                <ul>
+                  <li *ngFor="let fact of slide1" class="shape">
+                    <p>{{fact.banner}}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="carousel-content">
+              <div>
+                <ul>
+
+                  <li *ngFor="let fact of slide2">
+                    <p>{{fact.banner}}</p>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="carousel-content">
+              <div>
+                <ul>
+
+                  <li *ngFor="let fact of slide3">
+                    <p>{{fact.banner}}</p>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="carousel-content">
+              <div>
+                <ul>
+
+                  <li *ngFor="let fact of slide4">
+                    <p>{{fact.banner}}</p>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="carousel-content">
+              <div>
+                <ul>
+                  <li *ngFor="let fact of slide5">
+                    <p>{{fact.banner}}</p>
+                  </li>
+                </ul>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Controls --> <a class="left carousel-control" href="#text-carousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#text-carousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+  </div>
+</body>
